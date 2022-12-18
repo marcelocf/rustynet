@@ -26,7 +26,7 @@ dependencies = [
 [[package]]
 name = "echonet-lite"
 version = "0.1.4"
-source = "git+https://github.com/marcelocf/echonet-lite-rs.git?branch=marcelocf/1/singlefunctionlighting#362f39dbd5b74fa98c05356babd071b4082d9285"
+source = "git+https://github.com/marcelocf/echonet-lite-rs.git?branch=1-singlefunctionlighting-support#362f39dbd5b74fa98c05356babd071b4082d9285"
 dependencies = [
  "core2",
  "num",
