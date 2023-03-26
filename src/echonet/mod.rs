@@ -6,9 +6,14 @@ use std::{
 use tokio::net::UdpSocket;
 use tracing::info;
 
+pub mod data;
 pub mod discovery;
 
 pub const EL_MULTICAST_ADDR: Ipv4Addr = Ipv4Addr::new(224, 0, 23, 0);
+
+// TODO: this probably need the following refactoring:
+// mod echonet::io{Request, Response,server::{Server}}
+// and then all the complex types within their own modules
 
 // Represents an Echonet Lite request. Including the packet and source address
 pub struct Request {

@@ -4,10 +4,12 @@
 
 use echonet_lite as el;
 use el::prelude::*;
-use std::io;
 use std::net::{Ipv4Addr, UdpSocket};
 use std::time::Duration;
+use tokio::io;
 use tracing::info;
+
+use super::data::ProfilePropertyCode;
 
 const EL_MULTICAST_ADDR: Ipv4Addr = Ipv4Addr::new(224, 0, 23, 0);
 
@@ -32,7 +34,13 @@ pub fn find() -> io::Result<()> {
         .seoj([0x05u8, 0xFFu8, 0x01u8])
         .deoj([0x0Eu8, 0xF0u8, 0x01u8])
         .esv(el::ServiceCode::Get)
-        .props(el::props!([0x80, []], [0xD6, []]))
+        .props(el::props!(
+            [ProfilePropertyCode::UniqueIdentifierData as u8, []],
+            [ProfilePropertyCode::SelfNodeClasses as u8, []],
+            [ProfilePropertyCode::SelfNodeClassListS as u8, []],
+            [ProfilePropertyCode::SelfNodeInstances as u8, []],
+            [ProfilePropertyCode::SelfNodeInstanceListS as u8, []]
+        ))
         .build();
     let bytes = packet.serialize().expect("fail to serialize");
 
