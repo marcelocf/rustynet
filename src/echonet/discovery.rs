@@ -11,6 +11,16 @@ use tracing::info;
 
 const EL_MULTICAST_ADDR: Ipv4Addr = Ipv4Addr::new(224, 0, 23, 0);
 
+struct Discovery {}
+
+impl super::Listener for Discovery {
+    // do something with the incoming packet
+    // returns a vectors of new discovery packets to send.
+    fn process(_request: super::Request) -> Vec<super::Response> {
+        vec![]
+    }
+}
+
 pub fn find() -> io::Result<()> {
     let socket = UdpSocket::bind("0.0.0.0:3610")?;
     socket.set_read_timeout(Some(Duration::from_secs(2)))?;
