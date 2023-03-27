@@ -1,6 +1,6 @@
 use rustynet::echonet::discovery::find;
 use tracing::info;
-use tracing_subscriber;
+
 
 #[tokio::main]
 async fn main() -> rustynet::Result<()> {

@@ -6,7 +6,7 @@ use echonet_lite as el;
 use el::{prelude::*, props};
 use std::net::{Ipv4Addr, UdpSocket};
 use std::time::Duration;
-use tokio::io;
+
 use tracing::info;
 
 use crate::echonet::profile::InstanceList;
@@ -61,7 +61,7 @@ pub fn find() -> Result<(), Error> {
                         if let ClassPacket::Profile(_) = obj {
                             let instances = InstanceList::from(response.props)?;
                             for instance in instances {
-                                let obj = ClassPacket::new(instance.clone(), props![]);
+                                let obj = ClassPacket::new(instance, props![]);
                                 info!("  * instance: {obj}")
                             }
                         }
