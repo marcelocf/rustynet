@@ -7,6 +7,7 @@ edition = "2021"
 
 [dependencies]
 echonet-lite = "0.1"
+itertools = "0.10"
 thiserror = "1.0"
 tokio = { version = "1", features = ["full"] }
 tracing = "0.1"

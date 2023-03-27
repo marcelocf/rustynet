@@ -3,11 +3,14 @@
 // that went innactive.
 
 use echonet_lite as el;
-use el::prelude::*;
+use el::{prelude::*, props};
 use std::net::{Ipv4Addr, UdpSocket};
 use std::time::Duration;
 use tokio::io;
 use tracing::info;
+
+use crate::echonet::profile::InstanceList;
+use crate::error::Error;
 
 use super::data::ProfilePropertyCode;
 
@@ -23,7 +26,7 @@ impl super::Listener for Discovery {
     }
 }
 
-pub fn find() -> io::Result<()> {
+pub fn find() -> Result<(), Error> {
     let socket = UdpSocket::bind("0.0.0.0:3610")?;
     socket.set_read_timeout(Some(Duration::from_secs(2)))?;
     socket.set_multicast_loop_v4(true)?;
@@ -52,9 +55,16 @@ pub fn find() -> io::Result<()> {
             Ok((_, src_addr)) => {
                 if let Ok((_, response)) = el::ElPacket::from_bytes(&buffer) {
                     if response.is_response_for(&packet) {
-                        let obj: ClassPacket = response.into();
+                        let obj: ClassPacket = response.clone().into();
                         info!("got response from {}", src_addr);
                         info!("{:}", obj);
+                        if let ClassPacket::Profile(_) = obj {
+                            let instances = InstanceList::from(response.props)?;
+                            for instance in instances {
+                                let obj = ClassPacket::new(instance.clone(), props![]);
+                                info!("  * instance: {obj}")
+                            }
+                        }
                     }
                 }
             }

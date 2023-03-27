@@ -8,6 +8,7 @@ use tracing::info;
 
 pub mod data;
 pub mod discovery;
+pub mod profile;
 
 pub const EL_MULTICAST_ADDR: Ipv4Addr = Ipv4Addr::new(224, 0, 23, 0);
 
